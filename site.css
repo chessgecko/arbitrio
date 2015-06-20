@@ -1,0 +1,20 @@
+body {
+	margin-left: 100px;
+}
+
+.treeAlign {
+	margin-left: 30px;
+	border-left: thin dotted #101010;
+}
+
+button {
+	margin: 10px 5px 0px 5px;
+}
+
+input {
+	margin: 10px 5px 0px 0px;
+}
+
+p1 {
+	margin: 10px 5px 0px 0px;
+}
