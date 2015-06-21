@@ -1,0 +1,37 @@
+<header>
+	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+
+	<!-- Latest compiled and minified CSS -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+
+	<!-- Optional theme -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap-theme.min.css">
+
+	<!-- Latest compiled and minified JavaScript -->
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+
+
+	<link rel="stylesheet" href="styles/main.css">
+</header>
+
+<body>
+	<br>
+	<div class="title">
+		Joinable debates
+	</div>
+	<div align="center">
+		
+		<%for(var i = 0; i<currentDebates.length; i++){%>
+
+		<br>
+		<a href=<%="/viewDebate/"+currentDebates[i].id%>><table href='#' class='debates_table' bgcolor='#CECECE' width='80%' height = '5%' border='1' border-color='black'>
+			<td class='debates_td' width='10%'><p class='debates_p'> <b>Type:</b> <%=currentDebates[i].type%></p></td>
+			<td class='debates_td' width='10%'><p class='debates_p'> <b>Seriousness:</b><%=currentDebates[i].seriousness%>/4</p></td>
+			<td class='debates_td' width='20%'><p class='debates_p'> <b>Debators:</b><%=currentDebates[i].debator1 + " : anonymous"%></p></td>
+			<tr>
+				<td colspan = '6' class='debates_td2' width='100%'><p class='debates_p'> <b>Topic:</b> <%=currentDebates[i].topic%></p></td>
+			</table></a>
+			<%}%>
+		</div>
+	</body>
+	<script type="text/javascript" src="js/view.js"></script>
