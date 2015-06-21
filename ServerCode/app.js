@@ -43,8 +43,13 @@ var router = express.Router();
 app.use(express.static(__dirname + "/public"));
 console.log(__dirname + "/public");
 
+/*
 router.route('/').get(function(req, res){
 	res.send("hello world");
+});
+*/
+app.get('/', function(req, res){
+  res.render('index.ejs');
 });
 
 router.route('/getNumber/:myjsonid').get(function(req,res){
