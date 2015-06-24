@@ -118,11 +118,16 @@ function pushCommit(gitRepo, jsonid, res, callNumber){
 				.add('./*')
 				.commit("first commit!")
 				.removeRemote('origin')
-		     	 .addRemote('origin', gitRepo);
-				  
-		    	 require('child_process').exec('git push -f origin master');
+		     	 .addRemote('origin', gitRepo, function(err, update){
+					  if(err){
+						  console.log(err);
+						  return;
+					  }
+					  require('child_process').exec('git push -f origin master');
+					  console.log("remote added!");
+				  });
 			
-			    console.log("committed!");
+
 				
 				res.send(callNumber);
 				
