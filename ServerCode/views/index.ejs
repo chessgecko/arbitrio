@@ -1,0 +1,67 @@
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+
+<!-- Optional theme -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap-theme.min.css">
+
+<!-- Latest compiled and minified JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+
+<link rel="stylesheet" href="styles/main.css">
+
+<script src="http://code.createjs.com/easeljs-0.8.1.min.js"></script>
+<script src="http://code.createjs.com/tweenjs-0.6.1.min.js"></script>
+<script src="http://code.createjs.com/movieclip-0.8.1.min.js"></script>
+<script src="http://code.createjs.com/preloadjs-0.6.1.min.js"></script>
+<script src="saveMe.js"></script>
+
+<script>
+var canvas, stage, exportRoot;
+
+function init() {
+	canvas = document.getElementById("canvas");
+	images = images||{};
+	ss = ss||{};
+
+	var loader = new createjs.LoadQueue(false);
+	loader.addEventListener("fileload", handleFileLoad);
+	loader.addEventListener("complete", handleComplete);
+loader.loadFile({src:"images/saveMe_atlas_.json", type:"spritesheet", id:"saveMe_atlas_"}, true);
+	loader.loadManifest(lib.properties.manifest);
+}
+
+function handleFileLoad(evt) {
+	if (evt.item.type == "image") { images[evt.item.id] = evt.result; }
+}
+
+function handleComplete(evt) {
+	var queue = evt.target;
+	ss["saveMe_atlas_"] = queue.getResult("saveMe_atlas_");
+	exportRoot = new lib.saveMe();
+
+	stage = new createjs.Stage(canvas);
+	stage.addChild(exportRoot);
+	stage.update();
+
+	createjs.Ticker.setFPS(lib.properties.fps);
+	createjs.Ticker.addEventListener("tick", stage);
+}
+</script>
+
+<br>
+<body onload="init();">
+	<div class="title">
+		Arbitrio
+	</div>
+	<div class = "gitID" > Git ID: 12345678  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; PHONE: 1-800-555-4289 </div>
+	<br>
+	<div class="phone">
+	phone
+	</div>
+	<div class="content"> 
+	<canvas id="canvas" width="1000" height="800" style="background-color:#444560"></canvas>
+	<div class="footer">
+		Made By David Silin & Anil Jason at Techweek 2015
+	</div>
+	</div>
+</body>
