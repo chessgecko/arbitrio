@@ -645,6 +645,11 @@ p.nominalBounds = new cjs.Rectangle(0,0,53,53);
 		var prevX;
 		var prevY;
 		var id_incrementer = 0;
+		var KeyVal = function(){
+			this.key;
+			this.value;
+		}
+		KeyVal.prototype.constructor = KeyVal; 
 		
 		var Question = function(){
 			this.id = id_incrementer;
@@ -653,7 +658,7 @@ p.nominalBounds = new cjs.Rectangle(0,0,53,53);
 			this.children =  new Map();
 			this.number = '#';
 			var children = this.children;
-			function makeChild(newNode, i){
+			function makeChild(oldNode, newNode, i){
 				console.log("making child :" + i+":"+newNode);
 				var q = new Question();
 				q.number = i;
@@ -661,8 +666,13 @@ p.nominalBounds = new cjs.Rectangle(0,0,53,53);
 				newNode.quest = q;
 				quests.push(q);
 				children.set(i,q);
+				var keyval = new KeyVal();
+				keyval.key = i;
+				keyval.value = q;
+				oldNode.quest.keyVals.push(keyval);
 			}
 			this.makeChild = makeChild;
+			this.keyVals = new Array();
 		}
 		
 		Question.prototype.constructor = Question; 
@@ -851,7 +861,7 @@ p.nominalBounds = new cjs.Rectangle(0,0,53,53);
 					newNode.input.field.text = newNode.input.question;
 				}else{
 					console.log("child never existed. Creating quest");
-					node.quest.makeChild(newNode, original_i);
+					node.quest.makeChild(node, newNode, original_i);
 				}
 			},800);
 		}

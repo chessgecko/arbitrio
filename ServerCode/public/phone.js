@@ -161,8 +161,8 @@ p.nominalBounds = new cjs.Rectangle(0,0,125,101.7);
 						this.btn_7,
 						this.btn_8,
 						this.btn_9,
-						this.btn_10,
 						this.btn_11,
+						this.btn_10,
 						this.btn_12,
 						this.btn_13,
 						this.btn_14
@@ -170,12 +170,41 @@ p.nominalBounds = new cjs.Rectangle(0,0,125,101.7);
 		hider.addEventListener("click", reveal);
 		btns[12].addEventListener("click", reveal);
 		
+		function changeStatement(rootQuest){
+			statement = rootQuest.question;
+			state_i = 0;
+			console.log(rootQuest.keyVals);
+			for(var i=0; i<rootQuest.keyVals.length; i++){	
+					var btn = btns[rootQuest.keyVals[i].key];
+					var test = Number(i);
+					
+					addClickHandler(btn, rootQuest, test);
+			
+			}
+		}
+		
+		
+		function addClickHandler(btn, rootQuest, test) {
+			btn.addEventListener('click', function(e) {
+						console.log(test);
+						console.log(rootQuest);
+						console.log(rootQuest.keyVals);
+						console.log(rootQuest.keyVals[i]);
+						for(var j=0; j<btns.length-2; j++){
+							btns[j].removeAllEventListeners("click");
+						}
+						changeStatement(rootQuest.keyVals[test].value);
+			}, false);
+			console.log("added event listener to value:"+i);
+		}
+		
 		
 		function reveal(event){
 			hider.play();
 			if(open){
 				sacredJSON = exportRoot.generate();
-				console.log(sacredJSON);
+				var rootQuest = sacredJSON[0];
+				changeStatement(rootQuest);
 			}
 			open = !open;
 		}
@@ -187,12 +216,12 @@ p.nominalBounds = new cjs.Rectangle(0,0,125,101.7);
 		
 		console.log(this.btn_1);
 		function over(event){
-			console.log("lel");
+			//console.log("lel");
 			event.currentTarget.gotoAndStop(1);
 		}
 		
 		function out(event){
-			console.log("lel2");
+			//console.log("lel2");
 			event.currentTarget.gotoAndStop(0);
 		}
 		
