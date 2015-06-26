@@ -13,12 +13,51 @@
 <script src="http://code.createjs.com/tweenjs-0.6.1.min.js"></script>
 <script src="http://code.createjs.com/movieclip-0.8.1.min.js"></script>
 <script src="http://code.createjs.com/preloadjs-0.6.1.min.js"></script>
+
+<script src="universal.js"></script>
+<script src="phone.js"></script>
+
+<script>
+
+var canvasPhone, stagePhone, exportRootPhone;
+function init_phone() {
+	
+	canvasPhone = document.getElementById("canvas_phone");
+	imagesPhone = imagesPhone||{};
+	ssPhone = ssPhone||{};
+
+	var loader = new createjs.LoadQueue(false);
+	loader.addEventListener("fileload", handleFileLoadPhone);
+	loader.addEventListener("complete", handleCompletePhone);
+loader.loadFile({src:"images/phone_atlas_.json", type:"spritesheet", id:"phone_atlas_"}, true);
+	loader.loadManifest(libPhone.properties.manifest);
+}
+
+function handleFileLoadPhone(evt) {
+	if (evt.item.type == "image") { imagesPhone[evt.item.id] = evt.result; }
+}
+
+function handleCompletePhone(evt) {
+	var queue = evt.target;
+	ssPhone["phone_atlas_"] = queue.getResult("phone_atlas_");
+	exportRootPhone = new libPhone.phone();
+
+	stagePhone = new createjs.Stage(canvasPhone);
+	stagePhone.addChild(exportRootPhone);
+	stagePhone.update();
+
+	createjs.Ticker.setFPS(libPhone.properties.fps);
+	createjs.Ticker.addEventListener("tick", stagePhone);
+}
+</script>
+
+
+
 <script src="saveMe.js"></script>
 
 <script>
 var canvas, stage, exportRoot;
-
-function init() {
+function init_canvas() {
 	canvas = document.getElementById("canvas");
 	images = images||{};
 	ss = ss||{};
@@ -48,6 +87,24 @@ function handleComplete(evt) {
 }
 </script>
 
+
+
+
+
+
+
+
+<script>
+function init(){
+	
+	init_phone();
+	init_canvas();
+}
+</script>
+
+
+
+
 <br>
 <body onload="init();">
 	<div class="title">
@@ -59,7 +116,8 @@ function handleComplete(evt) {
 	phone
 	</div>
 	<div class="content"> 
-	<canvas id="canvas" width="1000" height="800" style="background-color:#444560"></canvas>
+	<canvas id="canvas" width="1200" height="800" style="background-color:#444560"></canvas>
+	<canvas class="phone" id="canvas_phone" width="360" height="640" style="background-color:black"></canvas>
 	<div class="footer">
 		Made By David Silin & Anil Jason at Techweek 2015
 	</div>

@@ -4,7 +4,7 @@ var p; // shortcut to reference prototypes
 
 // library properties:
 lib.properties = {
-	width: 1000,
+	width: 1200,
 	height: 800,
 	fps: 45,
 	color: "#444560",
@@ -69,6 +69,31 @@ p.nominalBounds = new cjs.Rectangle(0,0,53,53);
 	this.addChild(this.shape);
 }).prototype = p = new cjs.Container();
 p.nominalBounds = new cjs.Rectangle(0,0,60.4,59.4);
+
+
+(lib.dash = function(mode,startPosition,loop) {
+	this.initialize(mode,startPosition,loop,{});
+
+	// timeline functions:
+	this.frame_0 = function() {
+		this.stop();
+	}
+	this.frame_1 = function() {
+		this.stop();
+	}
+
+	// actions tween:
+	this.timeline.addTween(cjs.Tween.get(this).call(this.frame_0).wait(1).call(this.frame_1).wait(1));
+
+	// Layer 1
+	this.shape = new cjs.Shape();
+	this.shape.graphics.f().s("#0066FF").ss(2,1,1).p("EgqZgM6MBUzAAAIAAZ1MhUzAAAg");
+	this.shape.setTransform(262.1,76.2);
+
+	this.timeline.addTween(cjs.Tween.get(this.shape).to({_off:true},1).wait(1));
+
+}).prototype = p = new cjs.MovieClip();
+p.nominalBounds = new cjs.Rectangle(-10.4,-7.5,544.9,167.4);
 
 
 (lib.arrow = function() {
@@ -178,6 +203,69 @@ p.nominalBounds = new cjs.Rectangle(-1.5,-1.5,23.3,17.8);
 p.nominalBounds = new cjs.Rectangle(-11.6,-8.9,33,15.3);
 
 
+(lib.input = function(mode,startPosition,loop) {
+	this.initialize(mode,startPosition,loop,{});
+
+	// timeline functions:
+	this.frame_0 = function() {
+		var me = this;
+		this.Enabled = false;
+		var field = this.field;
+		var dash = this.dash;
+		this.question = "";
+		createjs.Ticker.addEventListener("tick", handleTick);
+		 function handleTick(event) {
+		     
+		 }
+		 
+		 function keypress(event){
+			 console.log(event);
+		 }
+		 
+		 this.keypress = keypress;
+		 
+		
+		window.addEventListener("keydown", function(e){
+			if(me.Enabled){
+				 var c = String.fromCharCode(e.keyCode)
+				// console.log(e.keyCode);
+				
+				
+				 if(e.keyCode === 8){
+					 me.question = me.question.substring(0, me.question.length-2);
+				 }
+				 
+				 if(e.keyCode !==192){
+					 me.question+=c;
+					 field.text = me.question;
+				 }
+				 me.parent.updateQuestion(me.question);
+				 console.log("still listening"+me.parent.quest.id);
+			 }
+		});
+	}
+
+	// actions tween:
+	this.timeline.addTween(cjs.Tween.get(this).call(this.frame_0).wait(1));
+
+	// Layer 2
+	this.dash = new lib.dash();
+	this.dash.setTransform(3.1,14,1,1,0,0,0,0,10);
+
+	this.timeline.addTween(cjs.Tween.get(this.dash).wait(1));
+
+	// Layer 1
+	this.field = new cjs.Text("", "bold 25px 'Courier New'");
+	this.field.name = "field";
+	this.field.lineHeight = 27;
+	this.field.lineWidth = 528;
+
+	this.timeline.addTween(cjs.Tween.get(this.field).wait(1));
+
+}).prototype = p = new cjs.MovieClip();
+p.nominalBounds = new cjs.Rectangle(-7.3,-3.5,544.9,190.9);
+
+
 (lib.dark_square = function(mode,startPosition,loop) {
 	this.initialize(mode,startPosition,loop,{});
 
@@ -230,7 +318,8 @@ p.nominalBounds = new cjs.Rectangle(0,0,60.4,59.4);
 
 	// timeline functions:
 	this.frame_0 = function() {
-		var selected = false;
+		var me = this;
+		me.selected = false;
 		var up;
 		var up_arrow;
 		var btns = new Array(
@@ -247,6 +336,8 @@ p.nominalBounds = new cjs.Rectangle(0,0,60.4,59.4);
 			this.eleven_btn,
 			this.twelve_btn
 		);
+		
+		this.btns = btns;
 		
 		
 		var btn_arrows = new Array(
@@ -274,16 +365,16 @@ p.nominalBounds = new cjs.Rectangle(0,0,60.4,59.4);
 		function playArrow(event){
 			
 			if(up_arrow === event.currentTarget){
-					console.log("ewfefe");
+					//console.log("ewfefe");
 					var index = btns.indexOf(event.currentTarget);
 					event.currentTarget.parent.parent.focusParent(index);
 			}
 			
 			if(up){
 				up.play();
-				console.log(this);
-				console.log(this.parent);
-				console.log(this.parent.parent);
+				//console.log(this);
+				//console.log(this.parent);
+				//console.log(this.parent.parent);
 				var index = btns.indexOf(event.currentTarget);
 				event.currentTarget.parent.parent.killChild(index);
 			}
@@ -299,8 +390,8 @@ p.nominalBounds = new cjs.Rectangle(0,0,60.4,59.4);
 		this.makeChild = makeChild;
 		function makeChild(mc){
 			var index = btn_arrows.indexOf(mc);
-			this.parent.makeChild(index,selected);
-			selected = true;
+			this.parent.makeChild(index,me.selected);
+			me.selected = true;
 		}
 	}
 
@@ -353,7 +444,7 @@ p.nominalBounds = new cjs.Rectangle(0,0,60.4,59.4);
 
 	this.timeline.addTween(cjs.Tween.get({}).to({state:[{t:this.one_btn},{t:this.two_btn},{t:this.three_btn},{t:this.four_btn},{t:this.five_btn},{t:this.six_btn},{t:this.seven_btn},{t:this.eight_btn},{t:this.nine_btn},{t:this.ten_btn},{t:this.eleven_btn},{t:this.twelve_btn}]}).wait(1));
 
-	// Layer 2
+	// Layer 5
 	this.twelve = new lib.transition();
 	this.twelve.setTransform(791.8,91.2,1,1,0,0,0,88.5,43.5);
 
@@ -402,7 +493,14 @@ p.nominalBounds = new cjs.Rectangle(0.6,0,881.2,136.2);
 	// timeline functions:
 	this.frame_29 = function() {
 		this.stop();
-		exportRoot.addChildren(new Array("lel"));
+		this.dad  = null;
+		this.quest = null;
+		
+		
+		
+		
+		var me = this;
+		//exportRoot.addChildren(new Array("lel"));
 		
 		this.makeChild = makeChild;
 		function makeChild(index,selected){
@@ -421,6 +519,25 @@ p.nominalBounds = new cjs.Rectangle(0.6,0,881.2,136.2);
 		function focusParent(index){
 			exportRoot.focusParent(index,this);
 		}
+		
+		function setParent(node){
+		//	console.log("passed: "+node);
+			me.dad = node;
+		//	console.log("passed: "+me.dad);
+		}
+		this.setParent = setParent;
+		
+		
+		function updateQuestion(question){
+			if(me.quest !== null){
+				//console.log(JSON.stringify(me.quest));
+				me.quest.question = question;
+			}
+		}
+		this.updateQuestion = updateQuestion;
+		
+		
+		//console.log("generated");
 	}
 
 	// actions tween:
@@ -449,6 +566,9 @@ p.nominalBounds = new cjs.Rectangle(0.6,0,881.2,136.2);
 	this.timeline.addTween(cjs.Tween.get(mask).to({graphics:null,x:0,y:0}).wait(14).to({graphics:mask_graphics_14,x:26,y:26.5}).wait(1).to({graphics:mask_graphics_15,x:26,y:26.7}).wait(1).to({graphics:mask_graphics_16,x:26,y:27.6}).wait(1).to({graphics:mask_graphics_17,x:26,y:29.2}).wait(1).to({graphics:mask_graphics_18,x:26,y:31.8}).wait(1).to({graphics:mask_graphics_19,x:26,y:35.9}).wait(1).to({graphics:mask_graphics_20,x:26,y:42.5}).wait(1).to({graphics:mask_graphics_21,x:25.9,y:54.2}).wait(1).to({graphics:mask_graphics_22,x:25.9,y:86.9}).wait(1).to({graphics:mask_graphics_23,x:25.8,y:140.6}).wait(1).to({graphics:mask_graphics_24,x:25.8,y:154.3}).wait(1).to({graphics:mask_graphics_25,x:25.8,y:161.1}).wait(1).to({graphics:mask_graphics_26,x:25.8,y:165}).wait(1).to({graphics:mask_graphics_27,x:25.8,y:167.2}).wait(1).to({graphics:mask_graphics_28,x:25.8,y:168.4}).wait(1).to({graphics:mask_graphics_29,x:175.8,y:361.5}).wait(1));
 
 	// Layer 3
+	this.input = new lib.input();
+	this.input.setTransform(94.3,134.9,1,1,0,0,0,266,79.2);
+
 	this.instance = new lib.Bitmap2();
 	this.instance.setTransform(-206.9,238.4,0.156,0.156);
 
@@ -460,18 +580,22 @@ p.nominalBounds = new cjs.Rectangle(0.6,0,881.2,136.2);
 	this.text.lineWidth = 116;
 	this.text.setTransform(-297.9,47.6);
 
-	this.text_1 = new cjs.Text(" 1", "25px 'Arial'", "#242432");
-	this.text_1.lineHeight = 27;
-	this.text_1.lineWidth = 116;
-	this.text_1.setTransform(352.1,9);
+	this.tagID = new cjs.Text(" 1", "25px 'Arial'", "#242432");
+	this.tagID.name = "tagID";
+	this.tagID.lineHeight = 27;
+	this.tagID.lineWidth = 116;
+	this.tagID.setTransform(352.1,9);
 
 	this.shape = new cjs.Shape();
 	this.shape.graphics.f("#9797C2").s().p("EgqaAQmIAAk9MBU1AAAIAAE9gEgqaAJdIAA6CMBU1AAAIAAaCg");
 	this.shape.setTransform(92.4,157.5);
 
-	this.instance.mask = this.instance_1.mask = this.text.mask = this.text_1.mask = this.shape.mask = mask;
+	this.butts = new lib.buttons();
+	this.butts.setTransform(-336.9,309.5,0.994,1,0,0,0,0,27.9);
 
-	this.timeline.addTween(cjs.Tween.get({}).to({state:[]}).to({state:[{t:this.shape},{t:this.text_1},{t:this.text},{t:this.instance_1},{t:this.instance}]},14).wait(16));
+	this.input.mask = this.instance.mask = this.instance_1.mask = this.text.mask = this.tagID.mask = this.shape.mask = this.butts.mask = mask;
+
+	this.timeline.addTween(cjs.Tween.get({}).to({state:[]}).to({state:[{t:this.shape},{t:this.tagID},{t:this.text},{t:this.instance_1},{t:this.instance},{t:this.input}]},14).to({state:[{t:this.shape},{t:this.tagID},{t:this.text},{t:this.instance_1},{t:this.instance},{t:this.input},{t:this.butts}]},15).wait(1));
 
 	// Layer 6
 	this.instance_2 = new lib.buttons();
@@ -480,20 +604,20 @@ p.nominalBounds = new cjs.Rectangle(0.6,0,881.2,136.2);
 
 	this.instance_2.mask = mask;
 
-	this.timeline.addTween(cjs.Tween.get(this.instance_2).wait(14).to({_off:false},0).wait(1).to({regX:446.6,regY:71.8,x:103.9,y:125.8},0).wait(1).to({y:127.7},0).wait(1).to({y:131},0).wait(1).to({x:104,y:136.2},0).wait(1).to({x:104.1,y:144.5},0).wait(1).to({x:104.3,y:158},0).wait(1).to({x:104.7,y:184.8},0).wait(1).to({x:106,y:273.8},0).wait(1).to({x:106.6,y:316.9},0).wait(1).to({x:106.9,y:333.5},0).wait(1).to({x:107,y:342.6},0).wait(1).to({x:107.1,y:348.1},0).wait(1).to({y:351.3},0).wait(1).to({y:352.9},0).wait(1).to({regX:0,regY:27.9,x:-336.9,y:309.5},0).wait(1));
+	this.timeline.addTween(cjs.Tween.get(this.instance_2).wait(14).to({_off:false},0).wait(1).to({regX:446.6,regY:71.8,x:103.9,y:125.8},0).wait(1).to({y:127.7},0).wait(1).to({y:131},0).wait(1).to({x:104,y:136.2},0).wait(1).to({x:104.1,y:144.5},0).wait(1).to({x:104.3,y:158},0).wait(1).to({x:104.7,y:184.8},0).wait(1).to({x:106,y:273.8},0).wait(1).to({x:106.6,y:316.8},0).wait(1).to({x:106.9,y:333.4},0).wait(1).to({x:107,y:342.6},0).wait(1).to({x:107.1,y:348.1},0).wait(1).to({y:351.2},0).wait(1).to({regX:0,regY:27.9,x:-336.9,y:309},0).to({_off:true},1).wait(1));
 
 	// Layer 1
-	this.text_2 = new cjs.Text("+", "35px 'Arial'", "#242432");
-	this.text_2.lineHeight = 37;
-	this.text_2.lineWidth = 21;
-	this.text_2.setTransform(16,6.3);
+	this.text_1 = new cjs.Text("+", "35px 'Arial'", "#242432");
+	this.text_1.lineHeight = 37;
+	this.text_1.lineWidth = 21;
+	this.text_1.setTransform(16,6.3);
 
 	this.instance_3 = new lib.minus_simbol();
 	this.instance_3.setTransform(26.5,27.8,1,1,0,0,0,12.5,19.5);
 	this.instance_3._off = true;
 
-	this.timeline.addTween(cjs.Tween.get({}).to({state:[{t:this.text_2,p:{x:16,y:6.3,text:"+"}}]}).to({state:[{t:this.instance_3}]},1).to({state:[{t:this.instance_3}]},1).to({state:[{t:this.instance_3}]},1).to({state:[{t:this.instance_3}]},1).to({state:[{t:this.instance_3}]},1).to({state:[{t:this.instance_3}]},1).to({state:[{t:this.instance_3}]},1).to({state:[{t:this.instance_3}]},1).to({state:[{t:this.instance_3}]},1).to({state:[{t:this.instance_3}]},1).to({state:[{t:this.instance_3}]},1).to({state:[{t:this.instance_3}]},1).to({state:[{t:this.instance_3}]},1).to({state:[{t:this.text_2,p:{x:-320.1,y:8,text:"-"}}]},1).to({state:[{t:this.text_2,p:{x:-320.1,y:8,text:"-"}}]},15).wait(1));
-	this.timeline.addTween(cjs.Tween.get(this.instance_3).wait(1).to({_off:false},0).wait(1).to({regX:16.9,x:29.9,y:27.7},0).wait(1).to({x:26.7},0).wait(1).to({x:20},0).wait(1).to({x:8.3},0).wait(1).to({x:-13.1},0).wait(1).to({x:-61.5},0).wait(1).to({x:-219.9,y:27.6},0).wait(1).to({x:-268.4,y:27.5},0).wait(1).to({x:-287.8},0).wait(1).to({x:-297.4},0).wait(1).to({x:-301.9},0).wait(1).to({regX:12.5,x:-307.6},0).to({_off:true},1).wait(16));
+	this.timeline.addTween(cjs.Tween.get({}).to({state:[{t:this.text_1,p:{x:16,y:6.3,text:"+"}}]}).to({state:[{t:this.instance_3}]},1).to({state:[{t:this.instance_3}]},1).to({state:[{t:this.instance_3}]},1).to({state:[{t:this.instance_3}]},1).to({state:[{t:this.instance_3}]},1).to({state:[{t:this.instance_3}]},1).to({state:[{t:this.instance_3}]},1).to({state:[{t:this.instance_3}]},1).to({state:[{t:this.instance_3}]},1).to({state:[{t:this.instance_3}]},1).to({state:[{t:this.instance_3}]},1).to({state:[{t:this.instance_3}]},1).to({state:[{t:this.instance_3}]},1).to({state:[{t:this.text_1,p:{x:-320.1,y:8,text:"-"}}]},1).to({state:[{t:this.text_1,p:{x:-320.1,y:8,text:"-"}}]},15).wait(1));
+	this.timeline.addTween(cjs.Tween.get(this.instance_3).wait(1).to({_off:false},0).wait(1).to({regX:16.9,regY:21.6,x:29.9,y:29.8},0).wait(1).to({x:26.7},0).wait(1).to({x:20},0).wait(1).to({x:8.3},0).wait(1).to({x:-13.1},0).wait(1).to({x:-61.5},0).wait(1).to({x:-219.9,y:29.7},0).wait(1).to({x:-268.4,y:29.6},0).wait(1).to({x:-287.8},0).wait(1).to({x:-297.4},0).wait(1).to({x:-301.9},0).wait(1).to({regX:12.5,regY:19.5,x:-307.6,y:27.5},0).to({_off:true},1).wait(16));
 
 	// Layer 2
 	this.instance_4 = new lib.lightPurpPane();
@@ -516,6 +640,81 @@ p.nominalBounds = new cjs.Rectangle(0,0,53,53);
 	this.frame_0 = function() {
 		this.stop();
 		stage.enableMouseOver(20);
+		
+		var dragEnabled = false;
+		var prevX;
+		var prevY;
+		var id_incrementer = 0;
+		
+		var Question = function(){
+			this.id = id_incrementer;
+			id_incrementer++;
+			this.question = "";
+			this.children =  new Map();
+			this.number = '#';
+			var children = this.children;
+			function makeChild(newNode, i){
+				console.log("making child :" + i+":"+newNode);
+				var q = new Question();
+				q.number = i;
+				newNode.tagID.text = q.id;
+				newNode.quest = q;
+				quests.push(q);
+				children.set(i,q);
+			}
+			this.makeChild = makeChild;
+		}
+		
+		Question.prototype.constructor = Question; 
+		var quests = new Array();
+		
+		
+		function generate(){
+			console.log(JSON.stringify(quests));
+			return quests;
+		}
+		this.generate = generate;
+		window.addEventListener("keydown", function(k){
+				if(k.keyCode == 27){
+					generate();
+				}
+				if(k.keyCode === 192){
+					dragEnabled = !dragEnabled;
+					if(dragEnabled){
+						prevX = stage.x;
+						prevY = stage.y;
+						stage.x = stage.canvas.width * (1-stage.scaleX)/2;
+						stage.y = stage.canvas.height * (1-stage.scaleY)/2;
+						window.addEventListener("mousewheel", MouseWheelHandler, false);
+						window.addEventListener("DOMMouseScroll", MouseWheelHandler, false);
+					}else{
+						
+						window.removeEventListener("mousewheel", MouseWheelHandler, false);
+						window.removeEventListener("DOMMouseScroll", MouseWheelHandler, false);
+						stage.scaleX = 1;
+						stage.scaleY = 1;
+						stage.x = prevX;
+						stage.y = prevY;
+					}
+				}
+		});
+		
+		
+		
+		function MouseWheelHandler(e) {
+		
+			var e = window.event || e; // old IE support
+			var delta = Math.max(-1, Math.min(1, (e.wheelDelta || -e.detail)));
+			//console.log("fel:"+delta);
+			stage.scaleX+=delta/20;
+			stage.scaleY+=delta/20;
+			stage.x = stage.canvas.width * (1-stage.scaleX)/2;
+			stage.y = stage.canvas.height * (1-stage.scaleY)/2;
+			return false;
+		}
+		
+		
+		
 		var rootNode = this.rootNode;
 		rootNode.addEventListener("click", expand);
 		rootNode.gotoAndStop(30);
@@ -543,6 +742,7 @@ p.nominalBounds = new cjs.Rectangle(0,0,53,53);
 		
 		this.focusParent = focusParent;
 		function focusParent(i, node){
+			console.log("focusing on Parent");
 			var index = nodes.indexOf(node);
 			var depth = depths[index];
 			var yshift = 0;
@@ -550,34 +750,63 @@ p.nominalBounds = new cjs.Rectangle(0,0,53,53);
 				yshift = -200;
 			}
 			console.log(depth);
+			console.log("index: "+index+" depth:"+ depth+" iTrans:"+(i*30));
 			createjs.Tween.get(stage)
 		         .wait(200)
 		         .to({y:stage.y-yshift, x: stage.x+i*30}, 1000)
 		         .call(handleComplete);
 		    function handleComplete() {
-		        //Tween complete
+				createjs.Tween.removeTweens(stage);
+		        //createjs.Tween.removeAllTweens();
 		    }
+			
+			node.butts.selected = false;
 		}
 		
 		this.addChildren = addChildren;
 		this.killChild = killChild;
 		function killChild(node,i){
+			//console.log("killing Child");
+			node.input.Enabled = true;
+			node.input.dash.gotoAndStop(0);
 			var index = nodes.indexOf(node);
 			var depth = depths[index];
 				createjs.Tween.get(node.child)
-		         .to({scaleY:.01, alpha:0}, 200)
+		         .to({scaleY:.01, alpha:.5}, 200)
 		         .call(handleComplete);
 				function handleComplete() {
+					//depths.splice(nodes.indexOf(node.child),1);
+					//tabbing.splice(nodes.indexOf(node.child),1);
+					//nodes.splice(nodes.indexOf(node.child),1);
 					stage.removeChild(node.child);
+					node.child.removeAllEventListeners();
+					node.child.input.Enabled = false;
+					console.log(node.child.quest);
+					if(node.child.quest.question === ""){
+						console.log("You did nothing");
+						//console.log(node);
+						//console.log(node.butts);
+						//console.log(node.butts.btns);
+						//console.log(node.butts.btns[node.child.quest.number]);
+						//console.log(node.butts.btns[node.child.quest.number].green);
+						node.butts.btns[node.child.quest.number].green.visible=false;
+					}
+					//createjs.Tween.removeAllTweens();
+					createjs.Tween.removeTweens(node.child);
 				}
-			
-			console.log("Deleted Child");
+			//	console.log("Deleted Child");
 		}
 		function makeChild(i,node,selected){
 			
+			//check if child existed
+			
+			var original_i = i;
+			console.log("making Child | selected:"+selected);
+			node.input.Enabled = false;
+			node.input.dash.gotoAndStop(1);
 			var index = nodes.indexOf(node);
 			var depth = depths[index];
-			console.log("index: "+index+" depth:"+ depth);
+			
 			var newNode = new lib.newNode();
 			newNode.scaleX = .5;
 			newNode.scaleY = .5;
@@ -590,35 +819,78 @@ p.nominalBounds = new cjs.Rectangle(0,0,53,53);
 			node.child = newNode;
 			var keep = i;
 			if(selected){
-				console.log("i:"+i+"old:"+oldi);
+				//console.log("i:"+i+"old:"+oldi);
 				i-=oldi;
-				console.log(i);
+				//console.log(i);
 			}
+			console.log("index: "+index+" depth:"+ depth+" iTrans:"+(-i*30));
 			createjs.Tween.get(stage)
 		         .wait(200)
 		         .to({y:depth*-200, x: stage.x-i*30}, 1000)
 		         .call(handleComplete);
 		    function handleComplete() {
-		        //Tween complete
+		       // createjs.Tween.removeAllTweens();
+				createjs.Tween.removeTweens(stage);
 		    }
+		
 			oldi= keep;
 			
+			
+			
+			setTimeout(function(){
+				newNode.input.Enabled = true;
+				newNode.input.dash.gotoAndStop(0);
+				newNode.dad = node;
+				//console.log(node.quest.children.get(original_i));
+				if(typeof node.quest.children.get(original_i) !== "undefined"){
+					console.log("child existed :"+original_i);
+					//load info
+					JSON.stringify(node.quest.children.get(original_i));
+					newNode.quest = node.quest.children.get(original_i);
+					newNode.input.question = newNode.quest.question;
+					newNode.input.field.text = newNode.input.question;
+				}else{
+					console.log("child never existed. Creating quest");
+					node.quest.makeChild(newNode, original_i);
+				}
+			},800);
 		}
-		
 		this.makeChild = makeChild;
+		
+		setTimeout(function(){
+			rootNode.input.Enabled = true;
+			var q = new Question();
+			rootNode.tagID.text = q.id;
+			rootNode.quest = q;
+			quests.push(q);
+			//console.log("set values");
+			//console.log(rootNode.quest);
+		},800);
+		
+		
+		
+		createjs.Tween.removeAllTweens = function() {
+		    var tweens = createjs.Tween._tweens;
+		    for (var i= 0, l=tweens.length; i<l; i++) {
+		        var tween = tweens[i];
+		        tween.paused = true;
+		        tween.target.tweenjs_count = 0;
+		    }
+		    tweens.length = 0;
+		}
 	}
 
 	// actions tween:
 	this.timeline.addTween(cjs.Tween.get(this).call(this.frame_0).wait(1));
 
-	// Layer 1
+	// Layer 2
 	this.rootNode = new lib.newNode();
-	this.rootNode.setTransform(523.6,25.5,0.472,0.472,0,0,0,26.5,26.5);
+	this.rootNode.setTransform(613.7,29.5,0.472,0.472,0,0,0,26.5,26.5);
 
 	this.timeline.addTween(cjs.Tween.get(this.rootNode).wait(1));
 
 }).prototype = p = new cjs.MovieClip();
-p.nominalBounds = new cjs.Rectangle(1011.1,413,25,25);
+p.nominalBounds = new cjs.Rectangle(1201.2,417,25,25);
 
 })(lib = lib||{}, images = images||{}, createjs = createjs||{}, ss = ss||{});
 var lib, images, createjs, ss;

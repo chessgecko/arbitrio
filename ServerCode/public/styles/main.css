@@ -204,7 +204,7 @@ canvas{
 	display: inline-block;
 	vertical-align: baseline;
 	background: #444560;
-	width: 65%;
+	width: 75%;
 	height: 99%;
 	margin-top: -18px;
 }
@@ -221,11 +221,11 @@ div.footer{
 }
 
 body{
-	overflow: hidden;
+	/*overflow: hidden;*/
 }
 
 div.phone{
-  width: 35%;
+  width: 25%;
   height: 84.5%;
   position: absolute;
   right: 0px;
@@ -234,5 +234,16 @@ div.phone{
   margin-top: -20px;
   text-align: center;
   padding-top: 20%;
+}
+
+#canvas_phone{
+  width: 25%;
+  height: 84.5%;
+  position: absolute;
+  right: 0px;
+  z-index: 0;
+  background: black;
+  margin-top: -20px;
+  text-align: center;
 }
 
