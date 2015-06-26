@@ -175,27 +175,28 @@ p.nominalBounds = new cjs.Rectangle(0,0,125,101.7);
 			var converted = new Array();
 			for(var i=0; i<quests.length; i++){
 				var obj = {};
-				obj.id = ""+quests[i].id;
-				obj.question = quests[i].question;
+				obj.id = ""+(quests[i].id+1);
+				obj.Question = quests[i].question;
 				var kids = new Array();
 				for(var j=0; j<quests[i].keyVals.length; j++){
 					var child = {};
-					child.link = ""+quests[i].keyVals[j].key;
+					child.Link = ""+(quests[i].keyVals[j].value.id+1);
 					kids.push(child);
 				}
-				obj.children = kids;
+				obj.Children = kids;
 				converted.push(obj);
 			}
 			
-			console.log("stringfyed: "+JSON.stringify(converted));
+			
 			createMyJsonAndGetFromServer(converted,function confirmed(phoneNum){
-				alert("Changes committed. You can test it by calling "+phoneNumber);
+				alert("Changes committed. You can test it by calling "+phoneNum);
 			});
 			
 			
 		}
 		
 		function createMyJsonAndGetFromServer(jsonInCorrectFormat, callback){
+			console.log("stringfyed: "+JSON.stringify(jsonInCorrectFormat));
 			$.ajax({
 				url:"https://api.myjson.com/bins",
 				type:"POST",
@@ -204,7 +205,7 @@ p.nominalBounds = new cjs.Rectangle(0,0,125,101.7);
 				dataType:"json",
 				success: function(data, textStatus, jqXHR){
 					$.ajax({
-						url:"https://my-arbitrio.co/getNumber/"+data.uri.substring(data.uri.length-5, data.uri.length),
+						url:"http://www.my-arbitrio.co/getNumber/"+data.uri.substring(data.uri.length-5, data.uri.length),
 						type:"GET",
 						contentType:"application/json; charset=utf-8",
 						dataType:"json",
@@ -212,6 +213,8 @@ p.nominalBounds = new cjs.Rectangle(0,0,125,101.7);
 							callback(data2);
 						}
 					});
+					
+					console.log("pinging http://www.my-arbitrio.co/getNumber/"+data.uri.substring(data.uri.length-5, data.uri.length))
 				}
 			});  
 		}

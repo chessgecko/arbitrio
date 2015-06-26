@@ -228,17 +228,17 @@ p.nominalBounds = new cjs.Rectangle(-11.6,-8.9,33,15.3);
 		window.addEventListener("keydown", function(e){
 			if(me.Enabled){
 				 var c = String.fromCharCode(e.keyCode)
-				// console.log(e.keyCode);
-				
-				
-				 if(e.keyCode === 8){
-					 me.question = me.question.substring(0, me.question.length-2);
-				 }
 				 
-				 if(e.keyCode !==192){
-					 me.question+=c;
-					 field.text = me.question;
+				 if(e.keyCode === 8 || e.keyCode === 46){
+					 me.question = me.question.substring(0, me.question.length-1);
+				 }else{
+				 
+					 if(e.keyCode !==192){
+						 me.question+=c;
+						 
+					 }
 				 }
+				 field.text = me.question;
 				 me.parent.updateQuestion(me.question);
 				// console.log("still listening"+me.parent.quest.id);
 			 }
