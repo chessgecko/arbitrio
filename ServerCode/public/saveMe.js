@@ -219,7 +219,7 @@ p.nominalBounds = new cjs.Rectangle(-11.6,-8.9,33,15.3);
 		 }
 		 
 		 function keypress(event){
-			 console.log(event);
+			 //console.log(event);
 		 }
 		 
 		 this.keypress = keypress;
@@ -240,7 +240,7 @@ p.nominalBounds = new cjs.Rectangle(-11.6,-8.9,33,15.3);
 					 field.text = me.question;
 				 }
 				 me.parent.updateQuestion(me.question);
-				 console.log("still listening"+me.parent.quest.id);
+				// console.log("still listening"+me.parent.quest.id);
 			 }
 		});
 	}
@@ -364,12 +364,11 @@ p.nominalBounds = new cjs.Rectangle(0,0,60.4,59.4);
 		
 		function playArrow(event){
 			
-			if(up_arrow === event.currentTarget){
-					//console.log("ewfefe");
-					var index = btns.indexOf(event.currentTarget);
-					event.currentTarget.parent.parent.focusParent(index);
-			}
 			
+			
+			var index = btns.indexOf(event.currentTarget);
+			event.currentTarget.green.visible = true;
+			btn_arrows[index].play();
 			if(up){
 				up.play();
 				//console.log(this);
@@ -377,12 +376,18 @@ p.nominalBounds = new cjs.Rectangle(0,0,60.4,59.4);
 				//console.log(this.parent.parent);
 				var index = btns.indexOf(event.currentTarget);
 				event.currentTarget.parent.parent.killChild(index);
+				up = null;
+				//return;
 			}
-			var index = btns.indexOf(event.currentTarget);
-			event.currentTarget.green.visible = true;
-			btn_arrows[index].play();
-			up = btn_arrows[index];
-			up_arrow = event.currentTarget;
+			
+			if(up_arrow === event.currentTarget){
+					//console.log("ewfefe");
+					var index = btns.indexOf(event.currentTarget);
+					event.currentTarget.parent.parent.focusParent(index);
+			}else{
+				up = btn_arrows[index];
+				up_arrow = event.currentTarget;
+			}
 			//event.currentTarget.displayObject.removeAllEventListeners("rollover");
 			//event.currentTarget.displayObject.removeAllEventListeners("rollout");
 		}
@@ -659,7 +664,7 @@ p.nominalBounds = new cjs.Rectangle(0,0,53,53);
 			this.number = '#';
 			var children = this.children;
 			function makeChild(oldNode, newNode, i){
-				console.log("making child :" + i+":"+newNode);
+				//console.log("making child :" + i+":"+newNode);
 				var q = new Question();
 				q.number = i;
 				newNode.tagID.text = q.id;
@@ -676,7 +681,8 @@ p.nominalBounds = new cjs.Rectangle(0,0,53,53);
 		}
 		
 		Question.prototype.constructor = Question; 
-		var quests = new Array();
+		this.quests = new Array();
+		var quests = this.quests;
 		
 		
 		function generate(){
@@ -726,7 +732,7 @@ p.nominalBounds = new cjs.Rectangle(0,0,53,53);
 		
 		
 		var rootNode = this.rootNode;
-		rootNode.addEventListener("click", expand);
+		//rootNode.addEventListener("click", expand);
 		rootNode.gotoAndStop(30);
 		
 		var nodes = new Array(this.rootNode);
@@ -736,6 +742,7 @@ p.nominalBounds = new cjs.Rectangle(0,0,53,53);
 		depths.push(0);
 		tabbing.push(580);
 		function expand(event){
+			console.log("target:"+event.currentTarget);
 			if(event.currentTarget.currentFrame === 0){
 				event.currentTarget.play();
 			}
@@ -752,15 +759,15 @@ p.nominalBounds = new cjs.Rectangle(0,0,53,53);
 		
 		this.focusParent = focusParent;
 		function focusParent(i, node){
-			console.log("focusing on Parent");
+			//console.log("focusing on Parent");
 			var index = nodes.indexOf(node);
 			var depth = depths[index];
 			var yshift = 0;
 			if(depth!=0){
 				yshift = -200;
 			}
-			console.log(depth);
-			console.log("index: "+index+" depth:"+ depth+" iTrans:"+(i*30));
+			//console.log(depth);
+			//console.log("index: "+index+" depth:"+ depth+" iTrans:"+(i*30));
 			createjs.Tween.get(stage)
 		         .wait(200)
 		         .to({y:stage.y-yshift, x: stage.x+i*30}, 1000)
@@ -791,9 +798,9 @@ p.nominalBounds = new cjs.Rectangle(0,0,53,53);
 					stage.removeChild(node.child);
 					node.child.removeAllEventListeners();
 					node.child.input.Enabled = false;
-					console.log(node.child.quest);
+					//console.log(node.child.quest);
 					if(node.child.quest.question === ""){
-						console.log("You did nothing");
+						//console.log("You did nothing");
 						//console.log(node);
 						//console.log(node.butts);
 						//console.log(node.butts.btns);
@@ -811,7 +818,7 @@ p.nominalBounds = new cjs.Rectangle(0,0,53,53);
 			//check if child existed
 			
 			var original_i = i;
-			console.log("making Child | selected:"+selected);
+			//console.log("making Child | selected:"+selected);
 			node.input.Enabled = false;
 			node.input.dash.gotoAndStop(1);
 			var index = nodes.indexOf(node);
